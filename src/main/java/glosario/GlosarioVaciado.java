@@ -63,6 +63,7 @@ public class GlosarioVaciado {
             }
             i++;
         }
+        conexion.close();
     }
 
     public void leerArchivo(){

@@ -38,6 +38,7 @@ public class OrdenarPalabras {
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
         }
+        conexion.close();
     }
 
     public void leerArchivo(){

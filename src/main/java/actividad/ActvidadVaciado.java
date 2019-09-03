@@ -1,5 +1,6 @@
 package actividad;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,8 +28,8 @@ public class ActvidadVaciado {
     }
 
     public void inserta(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema)\n" +
-                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?))");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
+                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?)");
 
         PreparedStatement preparedStatementLLevelLanguaje = connection.prepareStatement(
                 "INSERT INTO  alumno.nivel_lenguaje_actividad (id_actividad, id_nivel_lenguaje) VALUES (?, (SELECT clave FROM alumno.nivel_lenguaje WHERE valor = ?))");
@@ -41,6 +42,7 @@ public class ActvidadVaciado {
             preparedStatement.setString(5, actividadM.getLenguaje());
             preparedStatement.setString(6, actividadM.getTranscript());
             preparedStatement.setString(7, actividadM.getTema());
+            preparedStatement.setBinaryStream(8, actividadM.getVistaPrevia());
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
 
@@ -50,6 +52,7 @@ public class ActvidadVaciado {
                 preparedStatementLLevelLanguaje.executeUpdate();
             }
         }
+        conexion.close();
     }
 
 
@@ -110,6 +113,12 @@ public class ActvidadVaciado {
                 }
                 case 7: {
                     actividaModelo.setIdVideo(s);
+                    try{
+                        FileInputStream file = new FileInputStream("C:/Users/Antonio/Desktop/imagenes_actividad/".concat(s).concat(".jpg"));
+                        actividaModelo.setVistaPrevia(file);
+                    }catch (Exception e){
+                        System.out.println("Ocurrió un error al abrir el archivo: "+e.getMessage());
+                    }
                     break;
                 }
                 case 8: {

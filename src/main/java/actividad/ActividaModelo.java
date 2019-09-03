@@ -1,5 +1,7 @@
 package actividad;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -12,6 +14,7 @@ public class ActividaModelo {
     private String tema;
     private String idVideo;
     private String tiempo;
+    private InputStream vistaPrevia;
 
     public ActividaModelo() {
     }
@@ -80,6 +83,14 @@ public class ActividaModelo {
         this.tema = tema;
     }
 
+    public InputStream getVistaPrevia() {
+        return vistaPrevia;
+    }
+
+    public void setVistaPrevia(InputStream vistaPrevia) {
+        this.vistaPrevia = vistaPrevia;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", ActividaModelo.class.getSimpleName() + "[", "]")
@@ -91,6 +102,7 @@ public class ActividaModelo {
                 .add("tema='" + tema + "'")
                 .add("idVideo='" + idVideo + "'")
                 .add("tiempo='" + tiempo + "'")
+                .add("vistaPrevia=" + vistaPrevia)
                 .toString();
     }
 }

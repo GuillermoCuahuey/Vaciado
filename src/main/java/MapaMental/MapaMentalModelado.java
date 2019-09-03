@@ -3,7 +3,7 @@ package MapaMental;
 public class MapaMentalModelado {
 
     private String pregunta;
-    private String cardinalidad;
+    private Short cardinalidad;
     private String idVideo;
     //private String ;
 
@@ -16,13 +16,7 @@ public class MapaMentalModelado {
         this.pregunta = pregunta;
     }
 
-    public String getCardinalidad() {
-        return cardinalidad;
-    }
 
-    public void setCardinalidad(String cardinalidad) {
-        this.cardinalidad = cardinalidad;
-    }
 
     public String getIdVideo() {
         return idVideo;
@@ -32,11 +26,19 @@ public class MapaMentalModelado {
         this.idVideo = idVideo;
     }
 
+    public Short getCardinalidad() {
+        return cardinalidad;
+    }
+
+    public void setCardinalidad(Short cardinalidad) {
+        this.cardinalidad = cardinalidad;
+    }
+
     @Override
     public String toString() {
         return "MapaMentalModelado{" +
                 "pregunta='" + pregunta + '\'' +
-                ", cardinalidad='" + cardinalidad + '\'' +
+                ", cardinalidad=" + cardinalidad +
                 ", idVideo='" + idVideo + '\'' +
                 '}';
     }

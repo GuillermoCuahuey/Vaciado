@@ -1,12 +1,10 @@
 package MapaMental;
 
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -19,7 +17,7 @@ public class MapaMentalVaciado {
     List<MapaMentalModelado> mapaMentalModeloLista = new ArrayList<>();
     Connection conexion;
     public void leerArchivo(){
-        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Relacionar.csv";
+        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mapa_mental.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
             stringList = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)
@@ -45,12 +43,12 @@ public class MapaMentalVaciado {
         for (String s: mapaMentalLista){
             switch (i){
                 case 0: {
-                    mapaMentalModelado.setPregunta(s);
+                    mapaMentalModelado.setCardinalidad(Short.parseShort(s));
                     //System.out.println(s);
                     break;
                 }
                 case 1: {
-                    mapaMentalModelado.setCardinalidad(s);
+                    mapaMentalModelado.setPregunta(s);
                     //System.out.println(s);
 
                     break;
@@ -69,16 +67,42 @@ public class MapaMentalVaciado {
             i++;
             i = (i == 3)? 0 : i;
         }
-        //palabrasRepetidasLista.forEach(System.out::println);
+        mapaMentalLista.forEach(System.out::println);
     }
+    public void insertaRelacion(Connection connection) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.mapamental (pregunta,cardinalidad,codigo) values (?,?,default ) RETURNING codigo", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement preparedStatementRelacionarActividad = connection.prepareStatement(
+                "insert into alumno.mapamental_actividad (codigo,cardinalidad,id_actividad) values ( ?,?,?)");
 
+        for (MapaMentalModelado mapaM : mapaMentalModeloLista) {
+            preparedStatement.setString(1, mapaM.getPregunta());
+            preparedStatement.setShort(2, mapaM.getCardinalidad());
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()){
+                System.out.println(resultSet.getInt(1));
+            }
+            System.out.println(resultSet.getNString(1));
+            //preparedStatementRelacionarActividad.setString(1,resultSet.getInt(0));
+            //preparedStatementRelacionarActividad.setShort(2,mapaM.getCardinalidad());
+            //preparedStatementRelacionarActividad.setString(3,mapaM.getIdVideo());
+            //preparedStatementRelacionarActividad.executeUpdate();
+        }
+        connection.close();
+    }
     public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
         return conexion;
     }
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
+        MapaMentalVaciado mapaMentalVaciado = new MapaMentalVaciado();
+        mapaMentalVaciado.leerArchivo();
+        mapaMentalVaciado.llenaModelo();
+        mapaMentalVaciado.insertaRelacion(mapaMentalVaciado.conectaPostgre());
+        //mapaMentalVaciado.insertaRelacionActividadPalabrasRepetidas(mapaMentalVaciado.conectaPostgre());
 
-
+    }
 
 }

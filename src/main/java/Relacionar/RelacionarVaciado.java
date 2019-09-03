@@ -29,7 +29,6 @@ public class RelacionarVaciado {
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
         return conexion;
     }
-
     public void insertaRelacion(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar (palabra,imagen) values\n" +
                 "(?,?)");
@@ -46,25 +45,23 @@ public class RelacionarVaciado {
         }
         connection.close();
     }
-
     public void insertaRelacionActividadPalabrasRepetidas(Connection connection)throws SQLException{
         PreparedStatement preparedStatement= connection.prepareStatement("insert into alumno.actividad_relacionar (id_relacionar,id_actividad) values" +"((SELECT codigo FROM alumno.relacionar WHERE palabra = ?),?)"
 
         );
         int i=0;
         for (String s : palabrasRepetidasLista){
-            //if((i % 2) == 0){
-                //System.out.println(s);
+            if((i % 2) == 0){
+                System.out.println(" 1 "+s);
                 preparedStatement.setString(1, s);
-                System.out.println(palabrasRepetidasLista.get(i+1));
+                System.out.println("2"+palabrasRepetidasLista.get(i+1));
                 preparedStatement.setString(2, palabrasRepetidasLista.get(i+1));
                 preparedStatement.executeUpdate();
-            //}
+            }
             i++;
         }
         connection.close();
     }
-
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Relacionar.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
@@ -122,14 +119,14 @@ public class RelacionarVaciado {
             i++;
             i = (i == 3)? 0 : i;
         }
-        //palabrasRepetidasLista.forEach(System.out::println);
+        palabrasRepetidasLista.forEach(System.out::println);
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         RelacionarVaciado relacionarVaciado = new RelacionarVaciado();
         relacionarVaciado.leerArchivo();
         relacionarVaciado.llenaModelo();
         relacionarVaciado.insertaRelacion(relacionarVaciado.conectaPostgre());
-        //relacionarVaciado.insertaRelacionActividadPalabrasRepetidas(relacionarVaciado.conectaPostgre());
+        relacionarVaciado.insertaRelacionActividadPalabrasRepetidas(relacionarVaciado.conectaPostgre());
 
     }
 
