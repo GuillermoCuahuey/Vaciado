@@ -17,7 +17,7 @@ public class MapaMentalVaciado {
     List<MapaMentalModelado> mapaMentalModeloLista = new ArrayList<>();
     Connection conexion;
     public void leerArchivo(){
-        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mapa_mental.csv";
+        String fileName = "mapa_mental.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
             stringList = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)
@@ -67,27 +67,26 @@ public class MapaMentalVaciado {
             i++;
             i = (i == 3)? 0 : i;
         }
-        mapaMentalLista.forEach(System.out::println);
     }
     public void insertaRelacion(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.mapamental (pregunta,cardinalidad,codigo) values (?,?,default ) RETURNING codigo", Statement.RETURN_GENERATED_KEYS);
+        connection.setAutoCommit(true);
+        PreparedStatement preparedStatement =
+                connection.prepareStatement("insert into alumno.mapamental (pregunta,cardinalidad,codigo) values (?,?,default ) ON CONFLICT (codigo, cardinalidad) DO NOTHING;");
         PreparedStatement preparedStatementRelacionarActividad = connection.prepareStatement(
-                "insert into alumno.mapamental_actividad (codigo,cardinalidad,id_actividad) values ( ?,?,?)");
+                "insert into alumno.mapamental_actividad (codigo,cardinalidad,id_actividad) values ( (SELECT codigo FROM alumno.mapamental WHERE cardinalidad = ? AND pregunta = ?),?,?)");
 
         for (MapaMentalModelado mapaM : mapaMentalModeloLista) {
             preparedStatement.setString(1, mapaM.getPregunta());
             preparedStatement.setShort(2, mapaM.getCardinalidad());
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()){
-                System.out.println(resultSet.getInt(1));
-            }
-            System.out.println(resultSet.getNString(1));
-            //preparedStatementRelacionarActividad.setString(1,resultSet.getInt(0));
-            //preparedStatementRelacionarActividad.setShort(2,mapaM.getCardinalidad());
-            //preparedStatementRelacionarActividad.setString(3,mapaM.getIdVideo());
-            //preparedStatementRelacionarActividad.executeUpdate();
+            System.out.println();
+            preparedStatementRelacionarActividad.setShort(1,mapaM.getCardinalidad());
+            preparedStatementRelacionarActividad.setString(2, mapaM.getPregunta());
+            preparedStatementRelacionarActividad.setShort(3,mapaM.getCardinalidad());
+            preparedStatementRelacionarActividad.setString(4,mapaM.getIdVideo());
+            preparedStatementRelacionarActividad.executeUpdate();
         }
+//        connection.commit();
         connection.close();
     }
     public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
