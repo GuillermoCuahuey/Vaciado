@@ -1,10 +1,8 @@
-package CompletarOracion;
+package RelacionarOraciones;
 
-import java.io.InputStream;
-
-public class CompletarOracionModelo {
+public class RelacionarOracionesModelo {
     private String oracion;
-    private Short cardinalidad;
+    private String respuesta;
     private String id_Video;
 
     public String getOracion() {
@@ -15,7 +13,13 @@ public class CompletarOracionModelo {
         this.oracion = oracion;
     }
 
+    public String getRespuesta() {
+        return respuesta;
+    }
 
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
+    }
 
     public String getId_Video() {
         return id_Video;
@@ -25,19 +29,11 @@ public class CompletarOracionModelo {
         this.id_Video = id_Video;
     }
 
-    public Short getCardinalidad() {
-        return cardinalidad;
-    }
-
-    public void setCardinalidad(Short cardinalidad) {
-        this.cardinalidad = cardinalidad;
-    }
-
     @Override
     public String toString() {
-        return "CompletarOracionModelo{" +
+        return "RelacionarOracionesModelo{" +
                 "oracion='" + oracion + '\'' +
-                ", cardinalidad=" + cardinalidad +
+                ", respuesta='" + respuesta + '\'' +
                 ", id_Video='" + id_Video + '\'' +
                 '}';
     }

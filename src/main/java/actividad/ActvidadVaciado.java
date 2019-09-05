@@ -26,7 +26,6 @@ public class ActvidadVaciado {
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
         return conexion;
     }
-
     public void inserta(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
                 "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?)");
@@ -54,9 +53,6 @@ public class ActvidadVaciado {
         }
         conexion.close();
     }
-
-
-
     public void leerArchivo(){
         String fileName = "C:/Users/Anita/Desktop/transcripcion_1er_carga.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
@@ -137,7 +133,6 @@ public class ActvidadVaciado {
         actividaModeloList.forEach(System.out::println);
 
     }
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         ActvidadVaciado actvidadVaciado = new ActvidadVaciado();

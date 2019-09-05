@@ -25,7 +25,6 @@ public class OracionesVaciado {
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
         return conexion;
     }
-
     public void inserta(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.oraciones (codigo, cardinalidad, id_actividad, oracion) values (default, ?, ?, ?)");
 
@@ -38,7 +37,6 @@ public class OracionesVaciado {
             preparedStatement.executeUpdate();
         }
     }
-
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Ordenar_oraciones.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
@@ -56,7 +54,6 @@ public class OracionesVaciado {
         }
         nuevalista.forEach(System.out::println);
     }
-
     public void llenaModelo(){
         OracionesModelo oracionesModelo = new OracionesModelo();
         int i = 0;
@@ -83,7 +80,6 @@ public class OracionesVaciado {
         }
         oracionesModeloList.forEach(System.out::println);
     }
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         OracionesVaciado oracionesVaciado = new OracionesVaciado();
         oracionesVaciado.leerArchivo();

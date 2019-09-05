@@ -17,7 +17,7 @@ public class MapaMentalVaciado {
     List<MapaMentalModelado> mapaMentalModeloLista = new ArrayList<>();
     Connection conexion;
     public void leerArchivo(){
-        String fileName = "mapa_mental.csv";
+        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mapa_mental.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
             stringList = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)

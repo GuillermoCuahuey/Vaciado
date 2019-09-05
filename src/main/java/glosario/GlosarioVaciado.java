@@ -28,7 +28,6 @@ public class GlosarioVaciado {
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
         return conexion;
     }
-
     public void insertaGlosario(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values\n" +
                 "(?, (select clave from alumno.clase_glosario where valor = ?), ?, ?)");
@@ -65,7 +64,6 @@ public class GlosarioVaciado {
         }
         conexion.close();
     }
-
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/glosario.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
@@ -129,7 +127,6 @@ public class GlosarioVaciado {
         }
         glosarioModeloLista.forEach(System.out::println);
     }
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         GlosarioVaciado glosarioVaciado = new GlosarioVaciado();
         glosarioVaciado.leerArchivo();

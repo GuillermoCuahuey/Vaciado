@@ -1,6 +1,6 @@
-package CompletarOracion;
+package RelacionarOraciones;
 
-import CompletarOracion.CompletarOracionModelo;
+import hablar.HablarModelo;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
@@ -15,10 +15,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CompletarOracionVaciado {
-    List<CompletarOracionModelo> completarOracionModeloLista = new ArrayList<>();
+public class RelacionarOracionesVaciado {
+
+    List<RelacionarOracionesModelo> relacionarOracionesModeloLista = new ArrayList<>();
     List<String> stringList = new ArrayList<>();
-    List<String> completarOracionLista = new ArrayList<>();
+    List<String> relacionarOracionesLista = new ArrayList<>();
     Connection conexion;
 
     public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
@@ -28,7 +29,7 @@ public class CompletarOracionVaciado {
         return conexion;
     }
     public void leerArchivo(){
-        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Completar_oracion.csv";
+        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mach.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
             stringList = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)
@@ -38,7 +39,7 @@ public class CompletarOracionVaciado {
                 lecturaRelacionarLista.addAll(Pattern.compile("\\|")
                         .splitAsStream(s)
                         .collect(Collectors.toList()));
-                completarOracionLista.addAll(lecturaRelacionarLista);
+                relacionarOracionesLista.addAll(lecturaRelacionarLista);
                 //System.out.println("leerArchivo: ");
             }
         }catch(Exception ioe){
@@ -48,56 +49,56 @@ public class CompletarOracionVaciado {
         //glosarioLista.forEach(System.out::println);
         //glosarioActividadLista.forEach(System.out::println);
     }
-    public void llenaModelo() throws FileNotFoundException {
+    public void llenarModelo() throws FileNotFoundException {
         int i = 0;
-        CompletarOracionModelo completarOracionModelo = new CompletarOracionModelo();
-        for (String s: completarOracionLista){
+        RelacionarOracionesModelo relacionarOracionesModelo= new RelacionarOracionesModelo();
+        for (String s: relacionarOracionesLista){
             switch (i){
                 case 0: {
-                    completarOracionModelo.setOracion(s);
+                    relacionarOracionesModelo.setOracion(s);
                     //System.out.println(s);
                     break;
                 }
                 case 1: {
-                    completarOracionModelo.setCardinalidad(Short.parseShort(s));
+                    relacionarOracionesModelo.setRespuesta(s);
 
                     //System.out.println(s);
 
                     break;
                 }
                 case 2:{
-                    completarOracionModelo.setId_Video(s);
+                    relacionarOracionesModelo.setId_Video(s);
                     //System.out.println(s);
                     break;
                 }
 
             }
             if (i == 2){
-                completarOracionModeloLista.add(completarOracionModelo);
-                completarOracionModelo = new CompletarOracionModelo();
+                relacionarOracionesModeloLista.add(relacionarOracionesModelo);
+                relacionarOracionesModelo = new RelacionarOracionesModelo();
             }
             i++;
             i = (i == 3)? 0 : i;
         }
-        completarOracionModeloLista.forEach(System.out::println);
+        relacionarOracionesModeloLista.forEach(System.out::println);
     }
-    public void insertarCompletarOracion(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.completar (id,oracion, cardinalidad, id_actividad) values\n" +
+    public void insertarRelacionarOraciones(Connection connection) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values\n" +
                 "(default,?,?,?)");
 
-        for (CompletarOracionModelo completaOracionM : completarOracionModeloLista) {
-            preparedStatement.setString(1, completaOracionM.getOracion());
-            preparedStatement.setShort(2, completaOracionM.getCardinalidad());
-            preparedStatement.setString(3, completaOracionM.getId_Video());
+        for (RelacionarOracionesModelo relacionarOracionesM : relacionarOracionesModeloLista) {
+            preparedStatement.setString(1, relacionarOracionesM.getOracion());
+            preparedStatement.setString(2, relacionarOracionesM.getRespuesta());
+            preparedStatement.setString(3, relacionarOracionesM.getId_Video());
             preparedStatement.executeUpdate();
         }
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
-        CompletarOracionVaciado completarOracionVaciado = new CompletarOracionVaciado();
-        completarOracionVaciado.leerArchivo();
-        completarOracionVaciado.llenaModelo();
-        completarOracionVaciado.insertarCompletarOracion(completarOracionVaciado.conectaPostgre());
+        RelacionarOracionesVaciado  relacionarOracionesVaciado= new RelacionarOracionesVaciado();
+        relacionarOracionesVaciado.leerArchivo();
+        relacionarOracionesVaciado.llenarModelo();
+        relacionarOracionesVaciado.insertarRelacionarOraciones(relacionarOracionesVaciado.conectaPostgre());
 
 
     }

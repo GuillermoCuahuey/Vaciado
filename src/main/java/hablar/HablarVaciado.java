@@ -1,6 +1,4 @@
-package CompletarOracion;
-
-import CompletarOracion.CompletarOracionModelo;
+package hablar;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
@@ -15,8 +13,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CompletarOracionVaciado {
-    List<CompletarOracionModelo> completarOracionModeloLista = new ArrayList<>();
+public class HablarVaciado {
+    List<HablarModelo> hablarModeloLista = new ArrayList<>();
     List<String> stringList = new ArrayList<>();
     List<String> completarOracionLista = new ArrayList<>();
     Connection conexion;
@@ -28,7 +26,7 @@ public class CompletarOracionVaciado {
         return conexion;
     }
     public void leerArchivo(){
-        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Completar_oracion.csv";
+        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/hablar.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
             stringList = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)
@@ -50,54 +48,47 @@ public class CompletarOracionVaciado {
     }
     public void llenaModelo() throws FileNotFoundException {
         int i = 0;
-        CompletarOracionModelo completarOracionModelo = new CompletarOracionModelo();
+        HablarModelo hablarModelo = new HablarModelo();
         for (String s: completarOracionLista){
             switch (i){
                 case 0: {
-                    completarOracionModelo.setOracion(s);
-                    //System.out.println(s);
+                    hablarModelo.setOracion(s);
+                    System.out.println(s);
                     break;
                 }
-                case 1: {
-                    completarOracionModelo.setCardinalidad(Short.parseShort(s));
 
-                    //System.out.println(s);
-
-                    break;
-                }
-                case 2:{
-                    completarOracionModelo.setId_Video(s);
-                    //System.out.println(s);
+                case 1:{
+                    hablarModelo.setId_Video(s);
+                    System.out.println(s);
                     break;
                 }
 
             }
-            if (i == 2){
-                completarOracionModeloLista.add(completarOracionModelo);
-                completarOracionModelo = new CompletarOracionModelo();
+            if (i == 1){
+                hablarModeloLista.add(hablarModelo);
+                hablarModelo = new HablarModelo();
             }
             i++;
-            i = (i == 3)? 0 : i;
+            i = (i == 2)? 0 : i;
         }
-        completarOracionModeloLista.forEach(System.out::println);
+        //hablarModeloLista.forEach(System.out::println);
     }
-    public void insertarCompletarOracion(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.completar (id,oracion, cardinalidad, id_actividad) values\n" +
-                "(default,?,?,?)");
+    public void insertarHablar(Connection connection) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.hablar (id_actividad, tarjeta) values\n" +
+                "(?,?)");
 
-        for (CompletarOracionModelo completaOracionM : completarOracionModeloLista) {
-            preparedStatement.setString(1, completaOracionM.getOracion());
-            preparedStatement.setShort(2, completaOracionM.getCardinalidad());
-            preparedStatement.setString(3, completaOracionM.getId_Video());
+        for (HablarModelo hablarM : hablarModeloLista) {
+            preparedStatement.setString(1, hablarM.getId_Video());
+            preparedStatement.setString(2, hablarM.getOracion());
             preparedStatement.executeUpdate();
         }
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
-        CompletarOracionVaciado completarOracionVaciado = new CompletarOracionVaciado();
-        completarOracionVaciado.leerArchivo();
-        completarOracionVaciado.llenaModelo();
-        completarOracionVaciado.insertarCompletarOracion(completarOracionVaciado.conectaPostgre());
+        HablarVaciado hablarVaciado = new HablarVaciado();
+        hablarVaciado.leerArchivo();
+        hablarVaciado.llenaModelo();
+        hablarVaciado.insertarHablar(hablarVaciado.conectaPostgre());
 
 
     }
