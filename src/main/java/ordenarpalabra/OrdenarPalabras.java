@@ -21,10 +21,16 @@ public class OrdenarPalabras {
     private List<OrdenarPalabraModelo> ordenarPalabraModeloList = new ArrayList<>();
     Connection conexion;
 
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
+        return conexion;
+    }*/
+    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
         return conexion;
     }
     public void inserta(Connection connection) throws SQLException {
@@ -37,12 +43,12 @@ public class OrdenarPalabras {
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
         }
-        conexion.close();
+        connection.close();
     }
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Ordenar_palabras.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
-            ordenarPalabraLista = stream.filter(line -> !line.startsWith("título"))
+            ordenarPalabraLista = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)
                     .collect(Collectors.toList());
             for (String s : ordenarPalabraLista) {

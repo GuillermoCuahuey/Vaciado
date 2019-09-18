@@ -22,10 +22,16 @@ public class RelacionarOracionesVaciado {
     List<String> relacionarOracionesLista = new ArrayList<>();
     Connection conexion;
 
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
+        return conexion;
+    }*/
+    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
         return conexion;
     }
     public void leerArchivo(){
@@ -92,6 +98,7 @@ public class RelacionarOracionesVaciado {
             preparedStatement.setString(3, relacionarOracionesM.getId_Video());
             preparedStatement.executeUpdate();
         }
+        connection.close();
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {

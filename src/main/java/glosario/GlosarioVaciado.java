@@ -22,13 +22,18 @@ public class GlosarioVaciado {
     List<String> glosarioActividadLista = new ArrayList<>();
     Connection conexion;
 
+    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+         Class.forName("org.postgresql.Driver");
+         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
+         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
+         return conexion;
+     }*/
     public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
+        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
         return conexion;
-    }
-    public void insertaGlosario(Connection connection) throws SQLException {
+    } public void insertaGlosario(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values\n" +
                 "(?, (select clave from alumno.clase_glosario where valor = ?), ?, ?)");
 

@@ -19,10 +19,16 @@ public class OracionesVaciado {
     private List<OracionesModelo> oracionesModeloList = new ArrayList<>();
     Connection conexion;
 
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
+        return conexion;
+    }*/
+    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
         return conexion;
     }
     public void inserta(Connection connection) throws SQLException {
@@ -36,11 +42,12 @@ public class OracionesVaciado {
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
         }
+        connection.close();
     }
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Ordenar_oraciones.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
-            oracionVaciadoList = stream.filter(line -> !line.startsWith("Oracion"))
+            oracionVaciadoList = stream.filter(line -> !line.startsWith("#"))
                     .map(String::toString)
                     .collect(Collectors.toList());
             for (String s : oracionVaciadoList) {
