@@ -1,5 +1,7 @@
 package hablar;
 
+import JDBC.Todas_BD;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,18 +21,7 @@ public class HablarVaciado {
     List<String> completarOracionLista = new ArrayList<>();
     Connection conexion;
 
-    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
-        return conexion;
-    }*/
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-        return conexion;
-    }public void leerArchivo(){
+    public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/hablar.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
             stringList = stream.filter(line -> !line.startsWith("#"))
@@ -92,9 +83,10 @@ public class HablarVaciado {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         HablarVaciado hablarVaciado = new HablarVaciado();
+        Todas_BD baseDatos = new  Todas_BD();
         hablarVaciado.leerArchivo();
         hablarVaciado.llenaModelo();
-        hablarVaciado.insertarHablar(hablarVaciado.conectaPostgre());
+        hablarVaciado.insertarHablar(baseDatos.conectaPostgreDesarrollo());
 
 
     }

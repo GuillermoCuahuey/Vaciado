@@ -21,18 +21,18 @@ public class OrdenarPalabras {
     private List<OrdenarPalabraModelo> ordenarPalabraModeloList = new ArrayList<>();
     Connection conexion;
 
-    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
         return conexion;
-    }*/
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-        return conexion;
     }
+//    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
+//        Class.forName("org.postgresql.Driver");
+//        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
+//        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
+//        return conexion;
+//    }
     public void inserta(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.gramatica (codigo, palabra, id_actividad) VALUES (default, ?, ?)");
 

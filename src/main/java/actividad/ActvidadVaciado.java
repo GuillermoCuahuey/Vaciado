@@ -1,5 +1,7 @@
 package actividad;
 
+import JDBC.Todas_BD;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,18 +22,7 @@ public class ActvidadVaciado {
     List<ActividaModelo> actividaModeloList = new ArrayList<>();
     Connection conexion;
 
-    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
-        return conexion;
-    }*/
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-        return conexion;
-    }
+
     public void inserta(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
                 "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?)");
@@ -142,8 +133,9 @@ public class ActvidadVaciado {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         ActvidadVaciado actvidadVaciado = new ActvidadVaciado();
+        Todas_BD baseDatos = new Todas_BD();
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
-        actvidadVaciado.inserta(actvidadVaciado.conectaPostgre());
+        actvidadVaciado.inserta(baseDatos.conectaPostgreDesarrollo());
     }
 }

@@ -1,5 +1,6 @@
 package RelacionarOraciones;
 
+import JDBC.Todas_BD;
 import hablar.HablarModelo;
 
 import java.io.FileNotFoundException;
@@ -22,18 +23,7 @@ public class RelacionarOracionesVaciado {
     List<String> relacionarOracionesLista = new ArrayList<>();
     Connection conexion;
 
-    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
-        return conexion;
-    }*/
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-        return conexion;
-    }
+
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mach.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
@@ -102,10 +92,11 @@ public class RelacionarOracionesVaciado {
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
+        Todas_BD baseDato = new Todas_BD();
         RelacionarOracionesVaciado  relacionarOracionesVaciado= new RelacionarOracionesVaciado();
         relacionarOracionesVaciado.leerArchivo();
         relacionarOracionesVaciado.llenarModelo();
-        relacionarOracionesVaciado.insertarRelacionarOraciones(relacionarOracionesVaciado.conectaPostgre());
+        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDesarrollo());
 
 
     }

@@ -1,5 +1,7 @@
 package glosario;
 
+import JDBC.Todas_BD;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,18 +24,8 @@ public class GlosarioVaciado {
     List<String> glosarioActividadLista = new ArrayList<>();
     Connection conexion;
 
-    /*public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-         Class.forName("org.postgresql.Driver");
-         String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-         conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
-         return conexion;
-     }*/
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-        return conexion;
-    } public void insertaGlosario(Connection connection) throws SQLException {
+
+    public void insertaGlosario(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values\n" +
                 "(?, (select clave from alumno.clase_glosario where valor = ?), ?, ?)");
 
@@ -134,9 +126,10 @@ public class GlosarioVaciado {
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         GlosarioVaciado glosarioVaciado = new GlosarioVaciado();
+        Todas_BD baseDatos =new Todas_BD();
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
-        glosarioVaciado.insertaGlosario(glosarioVaciado.conectaPostgre());
-        glosarioVaciado.insertaGlosarioActividad(glosarioVaciado.conectaPostgre());
+        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDesarrollo());
+        glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDesarrollo());
     }
 }
