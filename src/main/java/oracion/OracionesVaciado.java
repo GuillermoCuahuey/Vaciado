@@ -1,5 +1,7 @@
 package oracion;
 
+import JDBC.Todas_BD;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -89,8 +91,9 @@ public class OracionesVaciado {
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         OracionesVaciado oracionesVaciado = new OracionesVaciado();
+        Todas_BD baseDato = new Todas_BD();
         oracionesVaciado.leerArchivo();
         oracionesVaciado.llenaModelo();
-        oracionesVaciado.inserta(oracionesVaciado.conectaPostgre());
+        oracionesVaciado.inserta(baseDato.conectaPostgrePruebas());
     }
 }

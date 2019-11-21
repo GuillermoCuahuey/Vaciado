@@ -18,4 +18,16 @@ public class Todas_BD {
         conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
         return conexion;
     }
+    public Connection conectaPostgreDigitalDesarrollo() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://nahtechnology-do-user-6032745-0.db.ondigitalocean.com:25060/defaultdb?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "doadmin", "qwbfyrzd0dt0ch4w");
+        return conexion;
+    }
+    public Connection conectaPostgreDigitalPruebas() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://nahtechnology-do-user-6032745-0.db.ondigitalocean.com:25060/pruebasesquadron?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "adminpruebasesquadron", "LvsKyI3IW5E");
+        return conexion;
+    }
 }

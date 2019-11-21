@@ -79,8 +79,11 @@ public class RelacionarOracionesVaciado {
         relacionarOracionesModeloLista.forEach(System.out::println);
     }
     public void insertarRelacionarOraciones(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values\n" +
-                "(default,?,?,?)");
+
+        //***Utilizar en casa de ejercicios nuevo
+                PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values (default,?,?,?) ");
+        //***Utilizar en caso de base de datos nuevos
+//        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values (default,?,?,?)");
 
         for (RelacionarOracionesModelo relacionarOracionesM : relacionarOracionesModeloLista) {
             preparedStatement.setString(1, relacionarOracionesM.getOracion());

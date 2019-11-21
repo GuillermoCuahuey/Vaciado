@@ -26,23 +26,31 @@ public class GlosarioVaciado {
 
 
     public void insertaGlosario(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values\n" +
-                "(?, (select clave from alumno.clase_glosario where valor = ?), ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values (?, (select clave from alumno.clase_glosario where valor = ?), ?, ?) ON CONFLICT (palabra, id_clase_glosario) DO NOTHING") ;
 
         for (GlosarioModelo glosarioM : glosarioModeloLista) {
+
+            System.out.println("*");
             preparedStatement.setString(1, glosarioM.getPalabra());
             preparedStatement.setString(2, glosarioM.getClasePalabra());
             preparedStatement.setBinaryStream(3, glosarioM.getImagen());
             preparedStatement.setString(4, glosarioM.getSignificado());
+
             preparedStatement.executeUpdate();
+            System.out.println(glosarioM.getPalabra());
         }
         PreparedStatement preparedStatementGA = connection.prepareStatement(
                 "insert into alumno.glosario_actividad (id_glosario,id_clase_glosario,id_actividad) values (?,(select clave from alumno.clase_glosario where valor = ?),?) on conflict (id_glosario, id_clase_glosario, id_actividad) do nothing");
+
         for (GlosarioModelo glosarioM : glosarioModeloLista) {
+            System.out.println("*");
             preparedStatementGA.setString(1, glosarioM.getPalabra());
             preparedStatementGA.setString(2, glosarioM.getClasePalabra());
             preparedStatementGA.setString(3, glosarioM.getIdVideo());
             preparedStatementGA.executeUpdate();
+            System.out.println(glosarioM.getPalabra());
+            System.out.println(glosarioM.getIdVideo());
+
         }
         connection.close();
     }
@@ -59,7 +67,7 @@ public class GlosarioVaciado {
             }
             i++;
         }
-        conexion.close();
+        connection.close();
     }
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/glosario.csv";
@@ -72,7 +80,7 @@ public class GlosarioVaciado {
                 auxiliar.addAll(Pattern.compile("\\|")
                         .splitAsStream(s)
                         .collect(Collectors.toList()));
-                if (auxiliar.size() > 2){
+                if (auxiliar.size() > 3){
                     glosarioLista.addAll(auxiliar);
                 }else {
                     glosarioActividadLista.addAll(auxiliar);
@@ -101,9 +109,13 @@ public class GlosarioVaciado {
                     break;
                 }
                 case 2: {
-                    FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(s));
-                    glosarioModelo.setImagen(file);
-
+                    try {
+                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(s));
+                        glosarioModelo.setImagen(file);
+                    } catch (Exception e) {
+                        FileInputStream defaul = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/empty.jpg");
+                        glosarioModelo.setImagen(defaul);
+                    }
                     break;
                 }
                 case 3: {
@@ -129,7 +141,8 @@ public class GlosarioVaciado {
         Todas_BD baseDatos =new Todas_BD();
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
-        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDesarrollo());
-        glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDesarrollo());
+        //glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalDesarrollo());
+        //glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDigitalDesarrollo());
+
     }
 }

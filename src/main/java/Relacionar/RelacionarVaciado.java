@@ -1,5 +1,7 @@
 package Relacionar;
 
+import JDBC.Todas_BD;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -105,10 +107,16 @@ public class RelacionarVaciado {
                     break;
                 }
                 case 1: {
-                    FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_relacionar/".concat(s));
-                    relacionarModelo.setImagen(file);
-                    //System.out.println(s);
 
+//                    try {
+                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_relacionar/".concat(s));
+                        relacionarModelo.setImagen(file);
+                        //System.out.println(s);
+//                    }catch (Exception e){
+//                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_relacionar/empty.jpg");
+//                        relacionarModelo.setImagen(file);
+//
+//                    }
                     break;
                     }
                 case 2:{
@@ -129,10 +137,11 @@ public class RelacionarVaciado {
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         RelacionarVaciado relacionarVaciado = new RelacionarVaciado();
+        Todas_BD baseDatos =new Todas_BD();
         relacionarVaciado.leerArchivo();
         relacionarVaciado.llenaModelo();
-        relacionarVaciado.insertaRelacion(relacionarVaciado.conectaPostgre());
-        relacionarVaciado.insertaRelacionActividadPalabrasRepetidas(relacionarVaciado.conectaPostgre());
+        relacionarVaciado.insertaRelacion(baseDatos.conectaPostgrePruebas());
+        relacionarVaciado.insertaRelacionActividadPalabrasRepetidas(baseDatos.conectaPostgrePruebas());
 
     }
 

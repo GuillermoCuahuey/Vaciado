@@ -80,12 +80,15 @@ public class CompletarOracionVaciado {
     public void insertarCompletarOracion(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.completar (id,oracion, cardinalidad, id_actividad) values\n" +
                 "(default,?,?,?)");
+        PreparedStatement preparedStatementTareaCompletar = connection.prepareStatement("insert into alumno.tarea_completar (id_tarea,id_complerar,respuesta,hora_respuesta) values\n" +
+                "(default,?,?,?)");
 
         for (CompletarOracionModelo completaOracionM : completarOracionModeloLista) {
             preparedStatement.setString(1, completaOracionM.getOracion());
             preparedStatement.setShort(2, completaOracionM.getCardinalidad());
             preparedStatement.setString(3, completaOracionM.getId_Video());
             preparedStatement.executeUpdate();
+            preparedStatementTareaCompletar.setString(1, completaOracionM.getId_Video());
         }
         connection.close();
     }
@@ -95,7 +98,7 @@ public class CompletarOracionVaciado {
         CompletarOracionVaciado completarOracionVaciado = new CompletarOracionVaciado();
         completarOracionVaciado.leerArchivo();
         completarOracionVaciado.llenaModelo();
-        completarOracionVaciado.insertarCompletarOracion(baseDatos.conectaPostgreDesarrollo());
+        completarOracionVaciado.insertarCompletarOracion(baseDatos.conectaPostgreDigitalDesarrollo());
 
 
     }

@@ -1,5 +1,6 @@
 package ordenarpalabra;
 
+import JDBC.Todas_BD;
 import actividad.ActividaModelo;
 
 import java.io.IOException;
@@ -87,8 +88,9 @@ public class OrdenarPalabras {
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         OrdenarPalabras ordenarPalabras = new OrdenarPalabras();
+        Todas_BD baseDato = new Todas_BD();
         ordenarPalabras.leerArchivo();
         ordenarPalabras.llenModelo();
-        ordenarPalabras.inserta(ordenarPalabras.conectaPostgre());
+        ordenarPalabras.inserta(baseDato.conectaPostgrePruebas());
     }
 }

@@ -1,5 +1,5 @@
 package MapaMental;
-
+import JDBC.Todas_BD;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.lang.Short.parseShort;
 
 public class MapaMentalVaciado {
     List<String> stringList = new ArrayList<>();
@@ -40,11 +42,12 @@ public class MapaMentalVaciado {
     public void llenaModelo() throws FileNotFoundException {
         int i = 0;
         MapaMentalModelado mapaMentalModelado = new MapaMentalModelado();
+        System.out.println(mapaMentalLista);
         for (String s: mapaMentalLista){
             switch (i){
                 case 0: {
-                    mapaMentalModelado.setCardinalidad(Short.parseShort(s));
-                    //System.out.println(s);
+                    System.out.println(s);
+                    mapaMentalModelado.setCardinalidad(parseShort(s));
                     break;
                 }
                 case 1: {
@@ -89,23 +92,13 @@ public class MapaMentalVaciado {
 //        connection.commit();
         connection.close();
     }
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
-        return conexion;
-    }
-//    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-//        Class.forName("org.postgresql.Driver");
-//        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-//        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-//        return conexion;
-//    }
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
+        Todas_BD baseDato = new Todas_BD();
         MapaMentalVaciado mapaMentalVaciado = new MapaMentalVaciado();
         mapaMentalVaciado.leerArchivo();
         mapaMentalVaciado.llenaModelo();
-        mapaMentalVaciado.insertaRelacion(mapaMentalVaciado.conectaPostgre());
+        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalPruebas());
         //mapaMentalVaciado.insertaRelacionActividadPalabrasRepetidas(mapaMentalVaciado.conectaPostgre());
 
     }

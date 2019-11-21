@@ -6,8 +6,6 @@ public class MapaMentalModelado {
     private Short cardinalidad;
     private String idVideo;
     //private String ;
-
-
     public String getPregunta() {
         return pregunta;
     }
@@ -15,8 +13,6 @@ public class MapaMentalModelado {
     public void setPregunta(String pregunta) {
         this.pregunta = pregunta;
     }
-
-
 
     public String getIdVideo() {
         return idVideo;

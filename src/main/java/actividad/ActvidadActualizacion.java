@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ActvidadVaciado {
+public class ActvidadActualizacion {
     List<String> stringList = new ArrayList<>();
     List<String> nuevaLista = new ArrayList<>();
     List<ActividaModelo> actividaModeloList = new ArrayList<>();
@@ -25,11 +24,8 @@ public class ActvidadVaciado {
 
     public void inserta(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
-                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?)");
+                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?) ON CONFLICT (id_video) DO UPDATE SET transcripcion = ?  ");
 
-        PreparedStatement preparedStatementLLevelLanguaje = connection.prepareStatement(
-                "INSERT INTO  alumno.nivel_lenguaje_actividad (id_actividad, id_nivel_lenguaje) VALUES (?, (SELECT clave FROM alumno.nivel_lenguaje WHERE valor = ?))");
-        //preparedStatement.setString(1, actividaModelo.getIdVideo());
         for (ActividaModelo actividadM : actividaModeloList) {
             preparedStatement.setString(1, actividadM.getIdVideo());
             preparedStatement.setString(2, actividadM.getTipoEstudiante());
@@ -39,14 +35,10 @@ public class ActvidadVaciado {
             preparedStatement.setString(6, actividadM.getTranscript());
             preparedStatement.setString(7, actividadM.getTema());
             preparedStatement.setBinaryStream(8, actividadM.getVistaPrevia());
+            preparedStatement.setString(9, actividadM.getTranscript());
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
 
-            for(String nivelLenguaje : actividadM.getNivelLenguaje()) {
-                preparedStatementLLevelLanguaje.setString(1, actividadM.getIdVideo());
-                preparedStatementLLevelLanguaje.setString(2, nivelLenguaje);
-                preparedStatementLLevelLanguaje.executeUpdate();
-            }
         }
         connection.close();
     }
@@ -132,11 +124,11 @@ public class ActvidadVaciado {
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        ActvidadVaciado actvidadVaciado = new ActvidadVaciado();
+        ActvidadActualizacion actvidadVaciado = new ActvidadActualizacion();
         Todas_BD baseDatos = new Todas_BD();
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
         //
-        actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalPruebas());
+         actvidadVaciado.inserta(baseDatos.conectaPostgrePruebas());
     }
 }
