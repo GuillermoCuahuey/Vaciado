@@ -25,9 +25,10 @@ public class Glosario_Actualizacion {
 
     public void insertaGlosario(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values (?, (select clave from alumno.clase_glosario where valor = ?), ?, ?) ON CONFLICT (palabra, id_clase_glosario) DO NOTHING") ;
-        PreparedStatement preparedStatement_relacionar = connection.prepareStatement("insert into alumno.actividad_relacionar (id_palabra, id_clase, id_actividad) values (?, (select clave from alumno.clase_glosario where valor = ?), ?) ") ;
-       PreparedStatement preparedStatementGA = connection.prepareStatement(
+        PreparedStatement preparedStatementGA = connection.prepareStatement(
                 "insert into alumno.glosario_actividad (id_glosario,id_clase_glosario,id_actividad) values (?,(select clave from alumno.clase_glosario where valor = ?),?) on conflict (id_glosario, id_clase_glosario, id_actividad) do nothing");
+        PreparedStatement preparedStatement_relacionar = connection.prepareStatement(
+                "insert into alumno.actividad_relacionar (id_palabra, id_clase, id_actividad) values (?, (select clave from alumno.clase_glosario where valor = ?), ?) on conflict (id_palabra, id_clase, id_actividad) do nothing") ;
 
         for (GlosarioModelo glosarioM : glosarioModeloLista) {
 
@@ -37,7 +38,6 @@ public class Glosario_Actualizacion {
             preparedStatement.setBinaryStream(3, glosarioM.getImagen());
             preparedStatement.setString(4, glosarioM.getSignificado());
             preparedStatement.executeUpdate();
-            System.out.println(glosarioM.getPalabra());
         }
 
         for (GlosarioModelo glosarioM : glosarioModeloLista) {
@@ -46,9 +46,6 @@ public class Glosario_Actualizacion {
             preparedStatementGA.setString(2, glosarioM.getClasePalabra());
             preparedStatementGA.setString(3, glosarioM.getIdVideo());
             preparedStatementGA.executeUpdate();
-            System.out.println(glosarioM.getPalabra());
-            System.out.println(glosarioM.getIdVideo());
-
         }
 
         for (GlosarioModelo glosarioM : glosarioModeloLista) {
@@ -56,7 +53,6 @@ public class Glosario_Actualizacion {
             preparedStatement_relacionar.setString(2, glosarioM.getClasePalabra());
             preparedStatement_relacionar.setString(3, glosarioM.getIdVideo());
             preparedStatement_relacionar.executeUpdate();
-            System.out.println(glosarioM.getPalabra());
         }
         connection.close();
     }
