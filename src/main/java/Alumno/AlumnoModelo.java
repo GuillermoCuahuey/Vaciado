@@ -1,5 +1,7 @@
 package Alumno;
 
+import java.sql.Date;
+
 public class AlumnoModelo {
     private String nombre;
     private String apellido_paterno;
@@ -9,6 +11,33 @@ public class AlumnoModelo {
     private String sexo;
     private Integer id;
     private  Integer id_nivel_lenguaje;
+    private Date nacimiento;
+    private String correo_electronico;
+    private String contrasenia_padre;
+
+    public Date getNacimiento() {
+        return nacimiento;
+    }
+
+    public void setNacimiento(Date nacimiento) {
+        this.nacimiento = nacimiento;
+    }
+
+    public String getCorreo_electronico() {
+        return correo_electronico;
+    }
+
+    public void setCorreo_electronico(String correo_electronico) {
+        this.correo_electronico = correo_electronico;
+    }
+
+    public String getContrasenia_padre() {
+        return contrasenia_padre;
+    }
+
+    public void setContrasenia_padre(String contrasenia_padre) {
+        this.contrasenia_padre = contrasenia_padre;
+    }
 
     public String getNombre() {
         return nombre;
