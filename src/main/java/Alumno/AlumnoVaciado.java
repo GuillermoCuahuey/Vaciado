@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,6 +28,8 @@ public class AlumnoVaciado {
                 alumnoModelo.setContrasenia(palabras[5]);
                 alumnoModelo.setSexo(palabras[6]);
                 alumnoModelo.setId_nivel_lenguaje(Integer.parseInt(palabras[8]));
+                alumnoModelo.setCorreo_electronico(palabras[10]);
+                alumnoModelo.setContrasenia_padre(palabras[11]);
 
                 inserta(alumnoModelo);
             });
