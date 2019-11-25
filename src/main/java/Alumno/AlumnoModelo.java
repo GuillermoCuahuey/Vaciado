@@ -1,6 +1,6 @@
 package Alumno;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class AlumnoModelo {
     private String nombre;
@@ -14,6 +14,8 @@ public class AlumnoModelo {
     private Date nacimiento;
     private String correo_electronico;
     private String contrasenia_padre;
+    private int grado;
+    private char grupo;
 
     public Date getNacimiento() {
         return nacimiento;
@@ -101,5 +103,21 @@ public class AlumnoModelo {
 
     public void setId_nivel_lenguaje(Integer id_nivel_lenguaje) {
         this.id_nivel_lenguaje = id_nivel_lenguaje;
+    }
+
+    public int getGrado() {
+        return grado;
+    }
+
+    public void setGrado(int grado) {
+        this.grado = grado;
+    }
+
+    public char getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(char grupo) {
+        this.grupo = grupo;
     }
 }

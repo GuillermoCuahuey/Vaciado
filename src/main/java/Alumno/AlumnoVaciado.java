@@ -1,40 +1,59 @@
 package Alumno;
 
 
+import java.io.BufferedReader;
+import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Date;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AlumnoVaciado {
 
-    Connection connection;
+    private Connection connection;
+    private Contrasenia contrasenia;
+    private DateFormat dateFormat;
 
-    public void leerArchivo() {
-        String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Completar_oracion.csv";
-        try(Stream<String> stream = Files.lines(Paths.get(fileName))){
-            stream.filter(line -> !line.startsWith("#")).forEach(linea -> {
+    public AlumnoVaciado() throws ClassNotFoundException, SQLException {
+        contrasenia = new Contrasenia();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Class.forName("org.postgresql.Driver");
+        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/testdb", "postgres", "123");
+    }
+
+    public void leerArchivo() throws SQLException {
+        Path path = Paths.get("C:/Users/Guillermo/Desktop/Ejercicios/Completar_oracion.csv");
+        connection.setAutoCommit(false);
+        String linea;
+        try (BufferedReader bufferedReader = Files.newBufferedReader(path)) {
+            while ((linea = bufferedReader.readLine()) != null) {
+                if (linea.charAt(0) == '#') { continue; }
                 String[] palabras = linea.split("\\|");
                 AlumnoModelo  alumnoModelo = new AlumnoModelo();
                 alumnoModelo.setNombre(palabras[0]);
                 alumnoModelo.setApellido_paterno(palabras[1]);
                 alumnoModelo.setApellido_materno(palabras[2]);
-                alumnoModelo.setApellido_materno(palabras[3]);
                 alumnoModelo.setApodo(palabras[4]);
-                alumnoModelo.setContrasenia(palabras[5]);
+                alumnoModelo.setContrasenia(contrasenia.generarAleatorio(3));
                 alumnoModelo.setSexo(palabras[6]);
-                alumnoModelo.setId_nivel_lenguaje(Integer.parseInt(palabras[8]));
-                alumnoModelo.setCorreo_electronico(palabras[10]);
-                alumnoModelo.setContrasenia_padre(palabras[11]);
+                alumnoModelo.setId_nivel_lenguaje(Integer.parseInt(palabras[7]));
+                alumnoModelo.setNacimiento(dateFormat.parse(palabras[8]));
+                alumnoModelo.setCorreo_electronico(" ");
+                alumnoModelo.setContrasenia_padre(" ");
 
                 inserta(alumnoModelo);
-            });
+            }
+            connection.commit();
         } catch(Exception ioe) {
-        System.out.println("Ocurrio un error: "+ioe.getCause()+"\nMensaje: "+ioe.getMessage());
+            System.out.println("Ocurrio un error: "+ioe.getCause()+"\nMensaje: "+ioe.getMessage());
+            connection.rollback();
+        } finally {
+            connection.close();
         }
     }
 
@@ -51,7 +70,7 @@ public class AlumnoVaciado {
             preparedStatement.setString(5, alumnoModelo.getContrasenia());
             preparedStatement.setString(6, alumnoModelo.getSexo());
             preparedStatement.setInt(8, alumnoModelo.getId_nivel_lenguaje());
-            preparedStatement.setDate(9, alumnoModelo.getNacimiento());
+            preparedStatement.setDate(9, new Date(alumnoModelo.getNacimiento().getTime()));
             preparedStatement.setString(10, alumnoModelo.getCorreo_electronico());
             preparedStatement.setString(11, alumnoModelo.getContrasenia_padre());
 
@@ -61,7 +80,7 @@ public class AlumnoVaciado {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AlumnoVaciado alumnoVaciado = new AlumnoVaciado();
         alumnoVaciado.leerArchivo();
     }
