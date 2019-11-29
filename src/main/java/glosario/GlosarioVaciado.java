@@ -80,7 +80,7 @@ public class GlosarioVaciado {
                 auxiliar.addAll(Pattern.compile("\\|")
                         .splitAsStream(s)
                         .collect(Collectors.toList()));
-                if (auxiliar.size() > 3){
+                if (auxiliar.size() > 2){
                     glosarioLista.addAll(auxiliar);
                 }else {
                     glosarioActividadLista.addAll(auxiliar);
@@ -142,7 +142,7 @@ public class GlosarioVaciado {
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
         //glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalDesarrollo());
-        //glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDigitalDesarrollo());
+        glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDigitalDesarrollo());
 
     }
 }

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Glosario_Actualizacion {
+public class Glosario_Actualizacion_Imagenes {
     List<GlosarioModelo> glosarioModeloLista = new ArrayList<>();
     List<String> stringList = new ArrayList<>();
     List<String> glosarioLista = new ArrayList<>();
@@ -24,36 +24,22 @@ public class Glosario_Actualizacion {
 
 
     public void insertaGlosario(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.glosario (palabra, id_clase_glosario, imagen, significado) values (?, (select clave from alumno.clase_glosario where valor = ?), ?, ?) ON CONFLICT (palabra, id_clase_glosario) DO NOTHING") ;
-        PreparedStatement preparedStatementGA = connection.prepareStatement(
-                "insert into alumno.glosario_actividad (id_glosario,id_clase_glosario,id_actividad) values (?,(select clave from alumno.clase_glosario where valor = ?),?) on conflict (id_glosario, id_clase_glosario, id_actividad) do nothing");
-        PreparedStatement preparedStatement_relacionar = connection.prepareStatement(
-                "insert into alumno.actividad_relacionar (id_palabra, id_clase, id_actividad) values (?, (select clave from alumno.clase_glosario where valor = ?), ?) on conflict (id_palabra, id_clase, id_actividad) do nothing") ;
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE alumno.glosario SET imagen =? " +
+                "WHERE alumno.glosario.palabra=? AND alumno.glosario.id_clase_glosario=(select clave from alumno.clase_glosario where valor = ?)") ;
 
         for (GlosarioModelo glosarioM : glosarioModeloLista) {
 
             System.out.println("*");
-            preparedStatement.setString(1, glosarioM.getPalabra());
-            preparedStatement.setString(2, glosarioM.getClasePalabra());
-            preparedStatement.setBinaryStream(3, glosarioM.getImagen());
-            preparedStatement.setString(4, glosarioM.getSignificado());
+            preparedStatement.setBinaryStream(1, glosarioM.getImagen());
+            preparedStatement.setString(2, glosarioM.getPalabra());
+            preparedStatement.setString(3, glosarioM.getClasePalabra());
+
+
+
             preparedStatement.executeUpdate();
+
         }
 
-        for (GlosarioModelo glosarioM : glosarioModeloLista) {
-            System.out.println("*");
-            preparedStatementGA.setString(1, glosarioM.getPalabra());
-            preparedStatementGA.setString(2, glosarioM.getClasePalabra());
-            preparedStatementGA.setString(3, glosarioM.getIdVideo());
-            preparedStatementGA.executeUpdate();
-        }
-
-        for (GlosarioModelo glosarioM : glosarioModeloLista) {
-            preparedStatement_relacionar.setString(1, glosarioM.getPalabra());
-            preparedStatement_relacionar.setString(2, glosarioM.getClasePalabra());
-            preparedStatement_relacionar.setString(3, glosarioM.getIdVideo());
-            preparedStatement_relacionar.executeUpdate();
-        }
         connection.close();
     }
     public void insertaGlosarioActividad(Connection connection) throws SQLException {
@@ -118,12 +104,17 @@ public class Glosario_Actualizacion {
                 }
                 case 2: {
                     try {
-                        System.out.println("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(palabra)+"_".concat(clase_palabra)+".jpg");
-                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(palabra)+"_".concat(clase_palabra)+".jpg");
+//                        System.out.println("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(palabra)+"_".concat(clase_palabra)+".jpg");
+                        System.out.println("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(s)+".jpg");
+//                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(palabra)+"_".concat(clase_palabra)+".jpg");
+                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(s));
                         glosarioModelo.setImagen(file);
                     } catch (Exception e) {
                         FileInputStream defaul = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/empty.jpg");
                         glosarioModelo.setImagen(defaul);
+                        System.out.println(cont);
+//
+                        cont =cont+1;
                     }
                     break;
                 }
@@ -143,14 +134,14 @@ public class Glosario_Actualizacion {
             i++;
             i = (i == 5)? 0 : i;
         }
-        glosarioModeloLista.forEach(System.out::println);
+        //glosarioModeloLista.forEach(System.out::println);
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
-        Glosario_Actualizacion glosarioVaciado = new Glosario_Actualizacion();
+        Glosario_Actualizacion_Imagenes glosarioVaciado = new Glosario_Actualizacion_Imagenes();
         Todas_BD baseDatos =new Todas_BD();
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
-        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalPreProduccion());
+        //glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalDesarrollo());
         //glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDigitalPreProduccion());
 
     }

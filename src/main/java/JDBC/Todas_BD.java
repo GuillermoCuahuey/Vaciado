@@ -30,4 +30,10 @@ public class Todas_BD {
         conexion =  DriverManager.getConnection(url, "adminpruebasesquadron", "LvsKyI3IW5E");
         return conexion;
     }
+    public Connection conectaPostgreDigitalPreProduccion() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://nahtechnology-do-user-6032745-0.db.ondigitalocean.com:25060/preproducciontecolotl?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "adminpreproducciontecoltl", ".69i57.1823j0j7&");
+        return conexion;
+    }
 }

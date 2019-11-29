@@ -129,6 +129,6 @@ public class ActvidadActualizacion {
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
         //
-         actvidadVaciado.inserta(baseDatos.conectaPostgrePruebas());
+         actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalPreProduccion());
     }
 }

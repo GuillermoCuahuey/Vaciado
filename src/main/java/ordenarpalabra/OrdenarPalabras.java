@@ -91,6 +91,6 @@ public class OrdenarPalabras {
         Todas_BD baseDato = new Todas_BD();
         ordenarPalabras.leerArchivo();
         ordenarPalabras.llenModelo();
-        ordenarPalabras.inserta(baseDato.conectaPostgrePruebas());
+        ordenarPalabras.inserta(baseDato.conectaPostgreDigitalPreProduccion());
     }
 }

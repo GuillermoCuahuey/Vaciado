@@ -98,7 +98,7 @@ public class MapaMentalVaciado {
         MapaMentalVaciado mapaMentalVaciado = new MapaMentalVaciado();
         mapaMentalVaciado.leerArchivo();
         mapaMentalVaciado.llenaModelo();
-        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalPruebas());
+        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalPreProduccion());
         //mapaMentalVaciado.insertaRelacionActividadPalabrasRepetidas(mapaMentalVaciado.conectaPostgre());
 
     }
