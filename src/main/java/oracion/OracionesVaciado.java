@@ -34,7 +34,7 @@ public class OracionesVaciado {
 //        return conexion;
 //    }
     public void inserta(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.oraciones (codigo, cardinalidad, id_actividad, oracion) values (default, ?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.oraciones (codigo, cardinalidad, id_actividad, oracion) values (default, ?, ?, ?)  ON CONFLICT (codigo, cardinalidad, id_actividad) DO NOTHING");
 
         //preparedStatement.setString(1, actividaModelo.getIdVideo());
         for (OracionesModelo oracionesModelo: oracionesModeloList){
@@ -94,6 +94,6 @@ public class OracionesVaciado {
         Todas_BD baseDato = new Todas_BD();
         oracionesVaciado.leerArchivo();
         oracionesVaciado.llenaModelo();
-        oracionesVaciado.inserta(baseDato.conectaPostgrePruebas());
+        oracionesVaciado.inserta(baseDato.conectaPostgreDigitalDesarrollo());
     }
 }

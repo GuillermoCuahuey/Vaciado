@@ -1,13 +1,9 @@
 package CompletarOracion;
-
-import CompletarOracion.CompletarOracionModelo;
 import JDBC.Todas_BD;
-
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,8 +16,6 @@ public class CompletarOracionVaciado {
     List<CompletarOracionModelo> completarOracionModeloLista = new ArrayList<>();
     List<String> stringList = new ArrayList<>();
     List<String> completarOracionLista = new ArrayList<>();
-    Connection conexion;
-
 
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/Completar_oracion.csv";
@@ -40,7 +34,7 @@ public class CompletarOracionVaciado {
         }catch(Exception ioe){
             System.out.println("Ocurrio un error: "+ioe.getCause()+"\nMensaje: "+ioe.getMessage());
         }
-        //stringList.forEach(System.out::println);
+        completarOracionLista.forEach(System.out::println);
         //glosarioLista.forEach(System.out::println);
         //glosarioActividadLista.forEach(System.out::println);
     }
@@ -62,8 +56,9 @@ public class CompletarOracionVaciado {
                     break;
                 }
                 case 2:{
-                    completarOracionModelo.setId_Video(s);
                     //System.out.println(s);
+                    completarOracionModelo.setId_Video(s);
+
                     break;
                 }
 
@@ -79,16 +74,15 @@ public class CompletarOracionVaciado {
     }
     public void insertarCompletarOracion(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.completar (id,oracion, cardinalidad, id_actividad) values\n" +
-                "(default,?,?,?)");
-        PreparedStatement preparedStatementTareaCompletar = connection.prepareStatement("insert into alumno.tarea_completar (id_tarea,id_complerar,respuesta,hora_respuesta) values\n" +
-                "(default,?,?,?)");
+                "(default,?,?,?)  ON CONFLICT (id) DO NOTHING ");
+
 
         for (CompletarOracionModelo completaOracionM : completarOracionModeloLista) {
             preparedStatement.setString(1, completaOracionM.getOracion());
             preparedStatement.setShort(2, completaOracionM.getCardinalidad());
+            System.out.println(completaOracionM.getId_Video());
             preparedStatement.setString(3, completaOracionM.getId_Video());
             preparedStatement.executeUpdate();
-            preparedStatementTareaCompletar.setString(1, completaOracionM.getId_Video());
         }
         connection.close();
     }

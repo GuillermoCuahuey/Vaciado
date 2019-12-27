@@ -17,7 +17,7 @@ public class MapaMentalVaciado {
     List<String> stringList = new ArrayList<>();
     List<String> mapaMentalLista = new ArrayList<>();
     List<MapaMentalModelado> mapaMentalModeloLista = new ArrayList<>();
-    Connection conexion;
+
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mapa_mental.csv";
         try(Stream<String> stream = Files.lines(Paths.get(fileName))){
@@ -35,19 +35,19 @@ public class MapaMentalVaciado {
         }catch(Exception ioe){
             System.out.println("Ocurrio un error: "+ioe.getCause()+"\nMensaje: "+ioe.getMessage());
         }
-        //stringList.forEach(System.out::println);
+        mapaMentalLista.forEach(System.out::println);
         //glosarioLista.forEach(System.out::println);
         //glosarioActividadLista.forEach(System.out::println);
     }
     public void llenaModelo() throws FileNotFoundException {
         int i = 0;
         MapaMentalModelado mapaMentalModelado = new MapaMentalModelado();
-        System.out.println(mapaMentalLista);
+        //System.out.println(mapaMentalLista);
         for (String s: mapaMentalLista){
             switch (i){
                 case 0: {
-                    System.out.println(s);
-                    mapaMentalModelado.setCardinalidad(parseShort(s));
+
+                    mapaMentalModelado.setCardinalidad(Short.parseShort(s));
                     break;
                 }
                 case 1: {
@@ -76,7 +76,7 @@ public class MapaMentalVaciado {
         PreparedStatement preparedStatement =
                 connection.prepareStatement("insert into alumno.mapamental (pregunta,cardinalidad,codigo) values (?,?,default ) ON CONFLICT (codigo, cardinalidad) DO NOTHING;");
         PreparedStatement preparedStatementRelacionarActividad = connection.prepareStatement(
-                "insert into alumno.mapamental_actividad (codigo,cardinalidad,id_actividad) values ( (SELECT codigo FROM alumno.mapamental WHERE cardinalidad = ? AND pregunta = ?),?,?)");
+                "insert into alumno.mapamental_actividad (codigo,cardinalidad,id_actividad) values ( (SELECT codigo FROM alumno.mapamental WHERE cardinalidad = ? AND pregunta = ?),?,?)  ON CONFLICT (codigo,cardinalidad,id_actividad) DO NOTHING");
 
         for (MapaMentalModelado mapaM : mapaMentalModeloLista) {
             preparedStatement.setString(1, mapaM.getPregunta());
@@ -98,7 +98,7 @@ public class MapaMentalVaciado {
         MapaMentalVaciado mapaMentalVaciado = new MapaMentalVaciado();
         mapaMentalVaciado.leerArchivo();
         mapaMentalVaciado.llenaModelo();
-        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalPreProduccion());
+        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalDesarrollo());
         //mapaMentalVaciado.insertaRelacionActividadPalabrasRepetidas(mapaMentalVaciado.conectaPostgre());
 
     }

@@ -20,28 +20,13 @@ public class OrdenarPalabras {
     private List<String> ordenarPalabraLista = new ArrayList<>();
     private List<String> nuevaLista = new ArrayList<>();
     private List<OrdenarPalabraModelo> ordenarPalabraModeloList = new ArrayList<>();
-    Connection conexion;
 
-    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://raja.db.elephantsql.com:5432/pqnjegbu?useServerPrepStmts=true";
-        conexion =  DriverManager.getConnection(url, "pqnjegbu", "PxMi0zXcr2vynTFNE_KHPIrzKbLKzIfU");
-        return conexion;
-    }
-//    public Connection conectaPostgre() throws ClassNotFoundException, SQLException {
-//        Class.forName("org.postgresql.Driver");
-//        String url = "jdbc:postgresql://e-squadron.com.mx:3693/tecolotlpruebasdb?useServerPrepStmts=true";
-//        conexion =  DriverManager.getConnection(url, "pruebastecolotl", "f78xi1Czu20");
-//        return conexion;
-//    }
     public void inserta(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.gramatica (codigo, palabra, id_actividad) VALUES (default, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.gramatica (codigo, palabra, id_actividad) VALUES (default, ?, ?) ON CONFLICT (codigo, id_actividad) DO NOTHING");
 
-        //preparedStatement.setString(1, actividaModelo.getIdVideo());
         for (OrdenarPalabraModelo ordenarPalabraModelo : ordenarPalabraModeloList) {
             preparedStatement.setString(1, ordenarPalabraModelo.getPalabra());
             preparedStatement.setString(2, ordenarPalabraModelo.getIdVideo());
-            //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
         }
         connection.close();
@@ -91,6 +76,6 @@ public class OrdenarPalabras {
         Todas_BD baseDato = new Todas_BD();
         ordenarPalabras.leerArchivo();
         ordenarPalabras.llenModelo();
-        ordenarPalabras.inserta(baseDato.conectaPostgreDigitalPreProduccion());
+        ordenarPalabras.inserta(baseDato.conectaPostgreDigitalDesarrollo());
     }
 }

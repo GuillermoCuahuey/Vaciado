@@ -2,6 +2,8 @@ package hablar;
 
 public class HablarModelo {
 
+
+    private Short cardinalidad;
     private String oracion;
     private String id_Video;
 
@@ -21,10 +23,19 @@ public class HablarModelo {
         this.id_Video = id_Video;
     }
 
+    public Short getCardinalidad() {
+        return cardinalidad;
+    }
+
+    public void setCardinalidad(Short cardinalidad) {
+        this.cardinalidad = cardinalidad;
+    }
+
     @Override
     public String toString() {
         return "HablarModelo{" +
-                "oracion='" + oracion + '\'' +
+                "cardinalidad=" + cardinalidad +
+                ", oracion='" + oracion + '\'' +
                 ", id_Video='" + id_Video + '\'' +
                 '}';
     }

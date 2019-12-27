@@ -70,10 +70,11 @@ public class HablarVaciado {
         //hablarModeloLista.forEach(System.out::println);
     }
     public void insertarHablar(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.hablar (id_actividad, tarjeta) values\n" +
-                "(?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.hablar (id, id_actividad, tarjeta) values\n" +
+                "(default ,?,?) ON CONFLICT (id) DO NOTHING");
 
         for (HablarModelo hablarM : hablarModeloLista) {
+            System.out.println(hablarM.getId_Video());
             preparedStatement.setString(1, hablarM.getId_Video());
             preparedStatement.setString(2, hablarM.getOracion());
             preparedStatement.executeUpdate();
@@ -86,7 +87,7 @@ public class HablarVaciado {
         Todas_BD baseDatos = new  Todas_BD();
         hablarVaciado.leerArchivo();
         hablarVaciado.llenaModelo();
-        hablarVaciado.insertarHablar(baseDatos.conectaPostgreDigitalPruebas());
+        hablarVaciado.insertarHablar(baseDatos.conectaPostgreDigitalDesarrollo());
 
     }
 

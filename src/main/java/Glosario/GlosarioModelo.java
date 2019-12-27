@@ -1,4 +1,4 @@
-package glosario;
+package Glosario;
 
 import java.io.InputStream;
 import java.util.StringJoiner;
@@ -6,7 +6,6 @@ import java.util.StringJoiner;
 public class GlosarioModelo {
     private String palabra;
     private String clasePalabra;
-    private InputStream imagen;
     private String significado;
     private String idVideo;
 
@@ -34,13 +33,6 @@ public class GlosarioModelo {
         this.significado = significado;
     }
 
-    public InputStream getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(InputStream imagen) {
-        this.imagen = imagen;
-    }
 
     public String getIdVideo() {
         return idVideo;
@@ -55,7 +47,6 @@ public class GlosarioModelo {
         return new StringJoiner(", ", GlosarioModelo.class.getSimpleName() + "[", "]")
                 .add("palabra='" + palabra + "'")
                 .add("clasePalabra='" + clasePalabra + "'")
-                .add("imagen=" + imagen)
                 .add("significado='" + significado + "'")
                 .add("idVideo='" + idVideo + "'")
                 .toString();

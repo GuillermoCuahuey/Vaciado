@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ActvidadActualizacion {
+public class ActvidadActualizacionTranscript {
     List<String> stringList = new ArrayList<>();
     List<String> nuevaLista = new ArrayList<>();
     List<ActividaModelo> actividaModeloList = new ArrayList<>();
@@ -23,19 +23,14 @@ public class ActvidadActualizacion {
 
 
     public void inserta(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
-                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?) ON CONFLICT (id_video) DO UPDATE SET transcripcion = ?  ");
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE alumno.actividad SET pregunta_detonadora=?,transcripcion=?, id_tema= (select clave from alumno.tema where valor= ?) WHERE id_video = ?");
 
         for (ActividaModelo actividadM : actividaModeloList) {
-            preparedStatement.setString(1, actividadM.getIdVideo());
-            preparedStatement.setString(2, actividadM.getTipoEstudiante());
-            preparedStatement.setInt(3, Integer.parseInt(actividadM.getTiempo()));
-            preparedStatement.setString(4, actividadM.getPregunta());
-            preparedStatement.setString(5, actividadM.getLenguaje());
-            preparedStatement.setString(6, actividadM.getTranscript());
-            preparedStatement.setString(7, actividadM.getTema());
-            preparedStatement.setBinaryStream(8, actividadM.getVistaPrevia());
-            preparedStatement.setString(9, actividadM.getTranscript());
+
+            preparedStatement.setString(1, actividadM.getPregunta());
+            preparedStatement.setString(2, actividadM.getTranscript());
+            preparedStatement.setString(3, actividadM.getTema());
+            preparedStatement.setString(4, actividadM.getIdVideo());
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
 
@@ -124,11 +119,11 @@ public class ActvidadActualizacion {
     }
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        ActvidadActualizacion actvidadVaciado = new ActvidadActualizacion();
+        ActvidadActualizacionTranscript actvidadVaciado = new ActvidadActualizacionTranscript();
         Todas_BD baseDatos = new Todas_BD();
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
         //
-         actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalPreProduccion());
+         actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalPruebas());
     }
 }

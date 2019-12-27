@@ -36,4 +36,11 @@ public class Todas_BD {
         conexion =  DriverManager.getConnection(url, "adminpreproducciontecoltl", ".69i57.1823j0j7&");
         return conexion;
     }
+    public Connection conectaPostgreDigitalDefault() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://nahtechnology-do-user-6032745-0.db.ondigitalocean.com:25060/tecolotl_default?useServerPrepStmts=true";
+        conexion =  DriverManager.getConnection(url, "admin_decolotl_default", "coowtx6jod2obpzs");
+        return conexion;
+    }
+
 }

@@ -25,12 +25,13 @@ public class ActvidadVaciado {
 
     public void inserta(Connection connection) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
-                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?)");
+                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?) ON CONFLICT (id_video) DO NOTHING");
 
         PreparedStatement preparedStatementLLevelLanguaje = connection.prepareStatement(
-                "INSERT INTO  alumno.nivel_lenguaje_actividad (id_actividad, id_nivel_lenguaje) VALUES (?, (SELECT clave FROM alumno.nivel_lenguaje WHERE valor = ?))");
+                "INSERT INTO  alumno.nivel_lenguaje_actividad (id_actividad, id_nivel_lenguaje) VALUES (?, (SELECT clave FROM alumno.nivel_lenguaje WHERE valor = ?))  ON CONFLICT (id_actividad, id_nivel_lenguaje) DO NOTHING");
         //preparedStatement.setString(1, actividaModelo.getIdVideo());
         for (ActividaModelo actividadM : actividaModeloList) {
+            System.out.println(actividadM.getIdVideo());
             preparedStatement.setString(1, actividadM.getIdVideo());
             preparedStatement.setString(2, actividadM.getTipoEstudiante());
             preparedStatement.setInt(3, Integer.parseInt(actividadM.getTiempo()));
@@ -107,7 +108,7 @@ public class ActvidadVaciado {
                 case 7: {
                     actividaModelo.setIdVideo(s);
                     try{
-                        FileInputStream file = new FileInputStream("C:/Users/Antonio/Desktop/imagenes_actividad/".concat(s).concat(".jpg"));
+                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/empty.jpg");
                         actividaModelo.setVistaPrevia(file);
                     }catch (Exception e){
                         System.out.println("Ocurrió un error al abrir el archivo: "+e.getMessage());
@@ -137,6 +138,7 @@ public class ActvidadVaciado {
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
         //
-        actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalPreProduccion());
+        actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalDesarrollo()
+        );
     }
 }

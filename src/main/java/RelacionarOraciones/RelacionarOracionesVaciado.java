@@ -21,8 +21,6 @@ public class RelacionarOracionesVaciado {
     List<RelacionarOracionesModelo> relacionarOracionesModeloLista = new ArrayList<>();
     List<String> stringList = new ArrayList<>();
     List<String> relacionarOracionesLista = new ArrayList<>();
-    Connection conexion;
-
 
     public void leerArchivo(){
         String fileName = "C:/Users/Guillermo/Desktop/Ejercicios/mach.csv";
@@ -81,7 +79,7 @@ public class RelacionarOracionesVaciado {
     public void insertarRelacionarOraciones(Connection connection) throws SQLException {
 
         //***Utilizar en casa de ejercicios nuevo
-                PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values (default,?,?,?) ");
+                PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values (default,?,?,?) ON CONFLICT (id) DO NOTHING ");
         //***Utilizar en caso de base de datos nuevos
 //        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.relacionar_oracion (id,pregunta, respuesta, id_actividad) values (default,?,?,?)");
 
@@ -93,16 +91,11 @@ public class RelacionarOracionesVaciado {
         }
         connection.close();
     }
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         Todas_BD baseDato = new Todas_BD();
         RelacionarOracionesVaciado  relacionarOracionesVaciado= new RelacionarOracionesVaciado();
         relacionarOracionesVaciado.leerArchivo();
         relacionarOracionesVaciado.llenarModelo();
-        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDesarrollo());
-
-
+        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDigitalDesarrollo());
     }
-
-
 }
