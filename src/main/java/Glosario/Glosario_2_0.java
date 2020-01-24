@@ -132,7 +132,8 @@ public class Glosario_2_0 {
         Todas_BD baseDatos =new Todas_BD();
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
-        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalDesarrollo());
+        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalPruebas());
+
         //glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDigitalPreProduccion());
 
     }

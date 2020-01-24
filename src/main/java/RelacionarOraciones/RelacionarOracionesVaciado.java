@@ -96,6 +96,9 @@ public class RelacionarOracionesVaciado {
         RelacionarOracionesVaciado  relacionarOracionesVaciado= new RelacionarOracionesVaciado();
         relacionarOracionesVaciado.leerArchivo();
         relacionarOracionesVaciado.llenarModelo();
-        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDigitalDesarrollo());
+        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDigitalPruebas());
+
+
+
     }
 }
