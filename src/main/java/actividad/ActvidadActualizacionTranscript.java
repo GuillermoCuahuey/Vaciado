@@ -94,7 +94,8 @@ public class ActvidadActualizacionTranscript {
                 case 7: {
                     actividaModelo.setIdVideo(s);
                     try{
-                        FileInputStream file = new FileInputStream("C:/Users/Antonio/Desktop/imagenes_actividad/".concat(s).concat(".jpg"));
+                        FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/empty.jpg");
+
                         actividaModelo.setVistaPrevia(file);
                     }catch (Exception e){
                         System.out.println("Ocurrió un error al abrir el archivo: "+e.getMessage());

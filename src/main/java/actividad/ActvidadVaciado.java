@@ -24,8 +24,8 @@ public class ActvidadVaciado {
 
 
     public void inserta(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema, vista_previa)\n" +
-                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?),?) ON CONFLICT (id_video) DO NOTHING");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into alumno.actividad (id_video, puntaje, id_tipo_estudiante, tiempo, pregunta_detonadora, lenguaje, transcripcion, id_tema)\n" +
+                "values (?, 100, (select clave from alumno.tipo_estudiante where valor = ?), ?, ?, ?, ?, (select clave from alumno.tema where valor= ?)) ON CONFLICT (id_video) DO NOTHING");
 
         PreparedStatement preparedStatementLLevelLanguaje = connection.prepareStatement(
                 "INSERT INTO  alumno.nivel_lenguaje_actividad (id_actividad, id_nivel_lenguaje) VALUES (?, (SELECT clave FROM alumno.nivel_lenguaje WHERE valor = ?))  ON CONFLICT (id_actividad, id_nivel_lenguaje) DO NOTHING");
@@ -39,7 +39,6 @@ public class ActvidadVaciado {
             preparedStatement.setString(5, actividadM.getLenguaje());
             preparedStatement.setString(6, actividadM.getTranscript());
             preparedStatement.setString(7, actividadM.getTema());
-            preparedStatement.setBinaryStream(8, actividadM.getVistaPrevia());
             //Agregar la pregunta detonadora para la insercion en la base de datos.
             preparedStatement.executeUpdate();
 
@@ -138,7 +137,6 @@ public class ActvidadVaciado {
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
         //
-        actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalDesarrollo()
-        );
+        actvidadVaciado.inserta(baseDatos.conectaPostgreDigitalPruebas());
     }
 }

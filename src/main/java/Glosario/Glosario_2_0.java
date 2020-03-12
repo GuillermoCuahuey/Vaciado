@@ -104,7 +104,7 @@ public class Glosario_2_0 {
                         FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(palabra)+"_".concat(clase_palabra)+".jpg");
                         glosarioImagenModelo.setImagen(file);
                     } catch (Exception e) {
-                        FileInputStream defaul = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/empty.jpg");
+                        FileInputStream defaul = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/vacio.jpg");
                         glosarioImagenModelo.setImagen(defaul);
                     }
                     break;
