@@ -104,7 +104,7 @@ public class Glosario_2_0 {
                         FileInputStream file = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/imagenes_glosario/".concat(palabra)+"_".concat(clase_palabra)+".jpg");
                         glosarioImagenModelo.setImagen(file);
                     } catch (Exception e) {
-                        FileInputStream defaul = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/vacio.jpg");
+                        FileInputStream defaul = new FileInputStream("C:/Users/Guillermo/Desktop/Ejercicios/vacio.png");
                         glosarioImagenModelo.setImagen(defaul);
                     }
                     break;
@@ -132,7 +132,7 @@ public class Glosario_2_0 {
         Todas_BD baseDatos =new Todas_BD();
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
-        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalPruebas());
+        glosarioVaciado.insertaGlosario(baseDatos.conectaPostgreDigitalDesarrollo());
 
         //glosarioVaciado.insertaGlosarioActividad(baseDatos.conectaPostgreDigitalPreProduccion());
 

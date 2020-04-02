@@ -94,6 +94,6 @@ public class OracionesVaciado {
         Todas_BD baseDato = new Todas_BD();
         oracionesVaciado.leerArchivo();
         oracionesVaciado.llenaModelo();
-        oracionesVaciado.inserta(baseDato.conectaPostgreDigitalPruebas());
+        oracionesVaciado.inserta(baseDato.conectaPostgreDigitalPreProduccion());
     }
 }

@@ -20,35 +20,35 @@ public class VaciadoGenralEjercicios {
         ActvidadVaciado actvidadVaciado = new ActvidadVaciado();
         actvidadVaciado.leerArchivo();
         actvidadVaciado.llenaModelo();
-        actvidadVaciado.inserta(baseDato.conectaPostgreDigitalPruebas());
+        actvidadVaciado.inserta(baseDato.conectaPostgreDigitalDesarrollo());
         glosarioVaciado.leerArchivo();
         glosarioVaciado.llenaModelo();
-        glosarioVaciado.insertaGlosario(baseDato.conectaPostgreDigitalPruebas());
+        glosarioVaciado.insertaGlosario(baseDato.conectaPostgreDigitalDesarrollo());
 
         CompletarOracionVaciado completarOracionVaciado = new CompletarOracionVaciado();
         completarOracionVaciado.leerArchivo();
         completarOracionVaciado.llenaModelo();
-        completarOracionVaciado.insertarCompletarOracion(baseDato.conectaPostgreDigitalPruebas());
+        completarOracionVaciado.insertarCompletarOracion(baseDato.conectaPostgreDigitalDesarrollo());
         HablarVaciado hablarVaciado = new HablarVaciado();
         hablarVaciado.leerArchivo();
         hablarVaciado.llenaModelo();
-        hablarVaciado.insertarHablar(baseDato.conectaPostgreDigitalPruebas());
+        hablarVaciado.insertarHablar(baseDato.conectaPostgreDigitalDesarrollo());
        MapaMentalVaciado mapaMentalVaciado = new MapaMentalVaciado();
         mapaMentalVaciado.leerArchivo();
         mapaMentalVaciado.llenaModelo();
-        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalPruebas());
+        mapaMentalVaciado.insertaRelacion(baseDato.conectaPostgreDigitalDesarrollo());
         OracionesVaciado oracionesVaciado = new OracionesVaciado();
         oracionesVaciado.leerArchivo();
         oracionesVaciado.llenaModelo();
-        oracionesVaciado.inserta(baseDato.conectaPostgreDigitalPruebas());
+        oracionesVaciado.inserta(baseDato.conectaPostgreDigitalDesarrollo());
         OrdenarPalabras ordenarPalabras = new OrdenarPalabras();
         ordenarPalabras.leerArchivo();
         ordenarPalabras.llenModelo();
-        ordenarPalabras.inserta(baseDato.conectaPostgreDigitalPruebas());
+        ordenarPalabras.inserta(baseDato.conectaPostgreDigitalDesarrollo());
         RelacionarOracionesVaciado relacionarOracionesVaciado= new RelacionarOracionesVaciado();
         relacionarOracionesVaciado.leerArchivo();
         relacionarOracionesVaciado.llenarModelo();
-        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDigitalPruebas()
+        relacionarOracionesVaciado.insertarRelacionarOraciones(baseDato.conectaPostgreDigitalDesarrollo()
                 );
     }
 }

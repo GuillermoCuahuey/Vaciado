@@ -92,7 +92,8 @@ public class CompletarOracionVaciado {
         CompletarOracionVaciado completarOracionVaciado = new CompletarOracionVaciado();
         completarOracionVaciado.leerArchivo();
         completarOracionVaciado.llenaModelo();
-        completarOracionVaciado.insertarCompletarOracion(baseDatos.conectaPostgreDigitalPruebas());
+        completarOracionVaciado.insertarCompletarOracion(baseDatos.conectaPostgreDigitalPreProduccion());
+
 
 
     }

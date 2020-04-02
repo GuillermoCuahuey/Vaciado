@@ -87,7 +87,7 @@ public class HablarVaciado {
         Todas_BD baseDatos = new  Todas_BD();
         hablarVaciado.leerArchivo();
         hablarVaciado.llenaModelo();
-        hablarVaciado.insertarHablar(baseDatos.conectaPostgreDigitalPruebas());
+        hablarVaciado.insertarHablar(baseDatos.conectaPostgreDigitalPreProduccion());
 
     }
 
